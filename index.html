@@ -24,6 +24,21 @@
         }
       }
       
+      function showVideo() {
+        video = true;
+        $('#video-bg').fadeIn(600, function() {
+          var top = ($(window).height() - 480) / 2;
+          $('#video').css('top', top+'px');
+          $('#video').show();
+        });
+      }
+      
+      function hideVideo() {
+        $('#video').fadeOut(600);
+        $('#video-bg').fadeOut(600);
+        video = false;
+      }
+      
       $(document).ready(function() {
         jQuery.easing.def = "easeOutQuad";
         
@@ -42,6 +57,7 @@
         last_smouse_y = 0;
         
         active = false;
+        video = false;
         
         $(document).mousemove(function(e){
             //console.log('mousemove');
@@ -62,7 +78,7 @@
               $("#layout").stop();
             }
             
-            if (active && (mouseTravel() && mouseRegion()) || anim_counter > 50) {
+            if ((active && (mouseTravel() && mouseRegion()) || anim_counter > 50) && !video) {
               anim_counter = 0;
 
               var theta = Math.atan(mouse_x / mouse_y);
@@ -147,6 +163,14 @@
             }
           
          });
+         
+         $('#video-bg').click(function() {
+           hideVideo();
+         });
+         
+         $('#video').click(function() {
+            hideVideo();
+          });
         
         /*$("#layout").animate({ 
           top: "-=300px",
@@ -180,15 +204,40 @@
       #loader .dark {
         color: #3a3234;
       }
+      
+      #video-bg {
+        background-color: black;
+        z-index: 1000;
+        opacity: 0.9;
+        width: 100%;
+        height: 2000px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        display: none;
+      }
+      
+      #video {
+        z-index: 1001;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <div id="video-bg"></div>
+    <div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/E3ZfKsf8KE4" frameborder="0" allowfullscreen></iframe></div>
+    
     <img src="images/layout.jpg" style="position:fixed;" id="layout" usemap="#layoutmap" />
     <img src="images/shadow.png" style="position:fixed;z-index:100" id="shadow" />
     
     <map name="layoutmap">
       <area shape="rect" coords="442,1201,638,1337" href="mailto:james@camelattack.com" alt="Contact">
-      <area shape="rect" coords="746,1258,995,1331" href="http://youtu.be/E3ZfKsf8KE4" target="_blank" alt="Watch the video">
+      <area shape="rect" coords="746,1258,995,1331" href="javascript:showVideo();" alt="Watch the video">
     </map>
     
     <script type="text/javascript">
