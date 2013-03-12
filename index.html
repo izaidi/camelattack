@@ -1,74 +1,196 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Camelattack : " />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Camelattack</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/izaidi/camelattack">View on GitHub</a>
-
-          <h1 id="project_title">Camelattack</h1>
-          <h2 id="project_tagline"></h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/izaidi/camelattack/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/izaidi/camelattack/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Camelattack maintained by <a href="https://github.com/izaidi">izaidi</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    <title>camel attack!!!</title>
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/jquery.easing.1.3.js"></script>
+    <script>
+      function mouseTravel() {
+        var t = 100;
+        if (Math.abs(smouse_x - last_smouse_x) > 100 || Math.abs(smouse_y - last_smouse_y) > 100) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      
+      function mouseRegion() {
+        var t = 200;
+        if ((page_x < t || page_x > w-t) || (page_y < t || page_y > h-t)) {
+          return true;
+        } else {
+          console.log('FALSE: '+page_x+','+page_y);
+          return false;
+        }
+      }
+      
+      $(document).ready(function() {
+        jQuery.easing.def = "easeOutQuad";
+        
+        w = $(window).width();
+        h = $(window).height();
+        img_w = 2558;
+        img_h = 1847;
+        x_offset = (w - img_w)/2;
+        y_offset = (h - img_h)/2;
+        $('#layout').offset({ top: y_offset, left: x_offset});
+        $('#shadow').offset({ top: y_offset, left: x_offset});
+        
+        anim_counter = 0;
+        
+        last_smouse_x = 0;
+        last_smouse_y = 0;
+        
+        active = false;
+        
+        $(document).mousemove(function(e){
+            //console.log('mousemove');
     
+            page_x = e.pageX;
+            page_y = e.pageY;
+            smouse_x = e.pageX - (w/2);
+            smouse_y = e.pageY - (h/2);
+            mouse_x = Math.abs(smouse_x);
+            mouse_y = Math.abs(smouse_y);
+            
+            if (!active && !mouseRegion()) {
+              active = true;
+              $('#shadow').fadeOut(2000);
+            }
+            
+            if (active && mouseTravel() && !mouseRegion()) {
+              $("#layout").stop();
+            }
+            
+            if (active && (mouseTravel() && mouseRegion()) || anim_counter > 50) {
+              anim_counter = 0;
 
+              var theta = Math.atan(mouse_x / mouse_y);
+              var offset = $('#layout').offset();
+
+              var x_dist = Math.abs(offset.left) + mouse_x;
+              if (x_dist > (img_w/2)) {
+                x_dist = img_w - x_dist;
+              }
+
+              var y_dist = Math.abs(offset.top) + mouse_y;
+              if (y_dist > (img_h/2)) {
+                y_dist = img_h - y_dist;
+              }
+
+              var a_length = y_dist / Math.cos(theta);
+              var b_length = x_dist / Math.sin(theta);
+
+              // length of vector determines duration (inverse)
+
+              var top = 0;
+              var bottom = -img_h + h;
+              var left = 0;
+              var right = -img_w + w;
+
+              var x_delta = 0;
+              var y_delta = 0;
+
+              if (a_length < b_length) { // going to hit top or bottom   
+                if (smouse_y > 0) { // bottom
+                  y_offset = bottom;
+                } else { // top
+                  y_offset = top;
+                }
+
+                x_delta = Math.sqrt(a_length*a_length - y_dist*y_dist);
+
+                if (smouse_x > 0) {
+                  x_offset -= x_delta;
+                } else {
+                  x_offset += x_delta;
+                }
+                
+              } else { // left or right  
+                if (smouse_x > 0) { // right
+                  x_offset = right;
+                } else { // left
+                  x_offset = left;
+                }
+
+                y_delta = Math.sqrt(b_length*b_length - x_dist*x_dist);
+
+                if (smouse_y > 0) {
+                  y_offset -= y_delta;
+                } else {
+                  y_offset += y_delta;
+                }
+  
+              }
+              
+              var hypo = Math.sqrt(mouse_x*mouse_x + mouse_y*mouse_y);
+              console.log('hypo: ' + hypo);
+              //var duration = 1000000/hypo;
+
+              // doublecheck
+              if (x_offset < right) x_offset = right;
+              if (x_offset > left) x_offset = left;
+              if (y_offset < bottom) y_offset = bottom;
+              if (y_offset > top) y_offset = top;
+
+              $("#layout").stop();
+              $("#layout").animate({ 
+                top: y_offset+"px", left: x_offset+"px"
+              }, 5000);
+
+              last_smouse_x = smouse_x;
+              last_smouse_y = smouse_y;
+
+              console.log('animated');
+            } else {
+              anim_counter++;
+            }
+          
+         });
+        
+        /*$("#layout").animate({ 
+          top: "-=300px",
+        }, 5000);*/
+        
+      });
+      
+      document.write('<div id="loader" style="display:table; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;">'
+          + '<div style="display:table-cell; vertical-align:middle; text-align: center;">'
+          + '<img src="images/loader.gif" width="32" height="32" /><br />loading<span class="dark">!!!</span>'
+          + '</div></div>');
+    </script>
+    <style type="text/css">
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      
+      #loader {
+        background-color: #1c1919;
+        font-family: Georgia, Times, serif;
+        color: #564f51;
+        font-size: 24px;
+        font-style: italic;
+      }
+      
+      #loader img {
+        margin-bottom: 10px;
+      }
+      
+      #loader .dark {
+        color: #3a3234;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="images/layout.jpg" style="position:fixed;" id="layout" />
+    <img src="images/shadow.png" style="position:fixed;z-index:100" id="shadow" />
+    
+    <script type="text/javascript">
+    /* hide the loading-message */
+    $(window).load(function(){
+        $('#loader').fadeOut(500);
+    });
+    </script>
   </body>
 </html>
