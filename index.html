@@ -26,6 +26,9 @@
       
       function showVideo() {
         video = true;
+        if (videoHidden) {
+          videoDiv.insertAfter('#video-bg');
+        }
         $('#video-bg').fadeIn(600, function() {
           var top = ($(window).height() - 480) / 2;
           $('#video').css('top', top+'px');
@@ -34,7 +37,9 @@
       }
       
       function hideVideo() {
-        $('#video').fadeOut(600);
+        videoDiv = $('#video');
+        videoDiv.remove();
+        videoHidden = true;
         $('#video-bg').fadeOut(600);
         video = false;
       }
@@ -51,6 +56,9 @@
         $('#layout').offset({ top: y_offset, left: x_offset});
         $('#shadow').offset({ top: y_offset, left: x_offset});
         
+        init_x = x_offset;
+        init_y = y_offset;
+        
         anim_counter = 0;
         
         last_smouse_x = 0;
@@ -58,6 +66,19 @@
         
         active = false;
         video = false;
+        videoHidden = false;
+        
+        $(document).mouseleave(function(e){
+          page_x = e.pageX;
+          page_y = e.pageY;
+          
+          if (page_x < 0 || page_y < 0 || page_x > $(document).width() || page_y > $(document).height()) {
+            $("#layout").stop();
+            $("#layout").animate({ 
+              top: init_y+"px", left: init_x+"px"
+            }, 5000);
+          }
+        });
         
         $(document).mousemove(function(e){
             //console.log('mousemove');
@@ -224,6 +245,7 @@
         left: 0;
         width: 100%;
         text-align: center;
+        display: inline-block;
         display: none;
       }
     </style>
