@@ -24,11 +24,10 @@
         }
       }
       
-      function showVideo() {
+      function showVideo(videoid) {
         video = true;
-        if (videoHidden) {
-          videoDiv.insertAfter('#video-bg');
-        }
+        videoDiv = $('<div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/' + videoid + '" frameborder="0" allowfullscreen></iframe></div>');
+        videoDiv.insertAfter('#video-bg');
         $('#video-bg').fadeIn(600, function() {
           var top = ($(window).height() - 480) / 2;
           $('#video').css('top', top+'px');
@@ -252,14 +251,14 @@
   </head>
   <body>
     <div id="video-bg"></div>
-    <div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/E3ZfKsf8KE4" frameborder="0" allowfullscreen></iframe></div>
     
     <img src="images/layout.jpg" style="position:fixed;" id="layout" usemap="#layoutmap" />
     <img src="images/shadow.png" style="position:fixed;z-index:100" id="shadow" />
     
     <map name="layoutmap">
       <area shape="rect" coords="442,1201,638,1337" href="mailto:james@camelattack.com" alt="Contact">
-      <area shape="rect" coords="746,1258,995,1331" href="javascript:showVideo();" alt="Watch the video">
+      <area shape="rect" coords="746,1258,995,1331" href="javascript:showVideo('E3ZfKsf8KE4');" alt="Watch the video">
+      <area shape="rect" coords="742,1334,939,1374" href="javascript:showVideo('qlKZMIHEUpY');" alt="Watch the video">
     </map>
     
     <script type="text/javascript">
