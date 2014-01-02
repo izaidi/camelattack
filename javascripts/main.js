@@ -1,5 +1,5 @@
 function showVideo(videoid) {
-    $('.ui-hint').hide();
+	$('.ui-hint').hide();
     video = true;
     videoDiv = $('<div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/' + videoid + '" frameborder="0" allowfullscreen></iframe></div>');
     videoDiv.insertAfter('#video-bg');
@@ -100,6 +100,18 @@ $(document).ready(function () {
     img_h = 1847;
     x_offset = (w - img_w) / 2;
     y_offset = (h - img_h) / 2;
+
+	// set click events on videos
+	$('.video').each(function() {
+		var videoId = this.id;
+		if (isMobile) {
+			$(this).attr('href', 'http://www.youtube.com/watch?v=' + videoId);
+		} else {
+			$(this).click(function() {
+				showVideo(videoId);
+			});
+		}
+	});
 
 	if (!isMobile) {
 		jQuery.easing.def = "linear";
