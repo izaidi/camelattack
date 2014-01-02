@@ -4,267 +4,43 @@
     <title>camel attack!!!</title>
     <script src="javascripts/jquery.js"></script>
     <script src="javascripts/jquery.easing.1.3.js"></script>
-    <script>
-      function mouseTravel() {
-        var t = 100;
-        if (Math.abs(smouse_x - last_smouse_x) > 100 || Math.abs(smouse_y - last_smouse_y) > 100) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      
-      function mouseRegion() {
-        var t = 200;
-        if ((page_x < t || page_x > w-t) || (page_y < t || page_y > h-t)) {
-          return true;
-        } else {
-          console.log('FALSE: '+page_x+','+page_y);
-          return false;
-        }
-      }
-      
-      function showVideo(videoid) {
-        video = true;
-        videoDiv = $('<div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/' + videoid + '" frameborder="0" allowfullscreen></iframe></div>');
-        videoDiv.insertAfter('#video-bg');
-        $('#video-bg').fadeIn(600, function() {
-          var top = ($(window).height() - 480) / 2;
-          $('#video').css('top', top+'px');
-          $('#video').show();
-        });
-      }
-      
-      function hideVideo() {
-        videoDiv = $('#video');
-        videoDiv.remove();
-        videoHidden = true;
-        $('#video-bg').fadeOut(600);
-        video = false;
-      }
-      
-      $(document).ready(function() {
-        jQuery.easing.def = "easeOutQuad";
-        
-        w = $(window).width();
-        h = $(window).height();
-        img_w = 2558;
-        img_h = 1847;
-        x_offset = (w - img_w)/2;
-        y_offset = (h - img_h)/2;
-        $('#layout').offset({ top: y_offset, left: x_offset});
-        $('#shadow').offset({ top: y_offset, left: x_offset});
-        
-        init_x = x_offset;
-        init_y = y_offset;
-        
-        anim_counter = 0;
-        
-        last_smouse_x = 0;
-        last_smouse_y = 0;
-        
-        active = false;
-        video = false;
-        videoHidden = false;
-        
-        $(document).mouseleave(function(e){
-          page_x = e.pageX;
-          page_y = e.pageY;
-          
-          if (page_x < 0 || page_y < 0 || page_x > $(document).width() || page_y > $(document).height()) {
-            $("#layout").stop();
-            $("#layout").animate({ 
-              top: init_y+"px", left: init_x+"px"
-            }, 5000);
-          }
-        });
-        
-        $(document).mousemove(function(e){
-            //console.log('mousemove');
-    
-            page_x = e.pageX;
-            page_y = e.pageY;
-            smouse_x = e.pageX - (w/2);
-            smouse_y = e.pageY - (h/2);
-            mouse_x = Math.abs(smouse_x);
-            mouse_y = Math.abs(smouse_y);
-            
-            if (!active && !mouseRegion()) {
-              active = true;
-              $('#shadow').fadeOut(2000);
-            }
-            
-            if (active && mouseTravel() && !mouseRegion()) {
-              $("#layout").stop();
-            }
-            
-            if ((active && (mouseTravel() && mouseRegion()) || anim_counter > 50) && !video) {
-              anim_counter = 0;
-
-              var theta = Math.atan(mouse_x / mouse_y);
-              var offset = $('#layout').offset();
-
-              var x_dist = Math.abs(offset.left) + mouse_x;
-              if (x_dist > (img_w/2)) {
-                x_dist = img_w - x_dist;
-              }
-
-              var y_dist = Math.abs(offset.top) + mouse_y;
-              if (y_dist > (img_h/2)) {
-                y_dist = img_h - y_dist;
-              }
-
-              var a_length = y_dist / Math.cos(theta);
-              var b_length = x_dist / Math.sin(theta);
-
-              // length of vector determines duration (inverse)
-
-              var top = 0;
-              var bottom = -img_h + h;
-              var left = 0;
-              var right = -img_w + w;
-
-              var x_delta = 0;
-              var y_delta = 0;
-
-              if (a_length < b_length) { // going to hit top or bottom   
-                if (smouse_y > 0) { // bottom
-                  y_offset = bottom;
-                } else { // top
-                  y_offset = top;
-                }
-
-                x_delta = Math.sqrt(a_length*a_length - y_dist*y_dist);
-
-                if (smouse_x > 0) {
-                  x_offset -= x_delta;
-                } else {
-                  x_offset += x_delta;
-                }
-                
-              } else { // left or right  
-                if (smouse_x > 0) { // right
-                  x_offset = right;
-                } else { // left
-                  x_offset = left;
-                }
-
-                y_delta = Math.sqrt(b_length*b_length - x_dist*x_dist);
-
-                if (smouse_y > 0) {
-                  y_offset -= y_delta;
-                } else {
-                  y_offset += y_delta;
-                }
-  
-              }
-              
-              var hypo = Math.sqrt(mouse_x*mouse_x + mouse_y*mouse_y);
-              console.log('hypo: ' + hypo);
-              //var duration = 1000000/hypo;
-
-              // doublecheck
-              if (x_offset < right) x_offset = right;
-              if (x_offset > left) x_offset = left;
-              if (y_offset < bottom) y_offset = bottom;
-              if (y_offset > top) y_offset = top;
-
-              $("#layout").stop();
-              $("#layout").animate({ 
-                top: y_offset+"px", left: x_offset+"px"
-              }, 5000);
-
-              last_smouse_x = smouse_x;
-              last_smouse_y = smouse_y;
-
-              console.log('animated');
-            } else {
-              anim_counter++;
-            }
-          
-         });
-         
-         $('#video-bg').click(function() {
-           hideVideo();
-         });
-         
-         $('#video').click(function() {
-            hideVideo();
-          });
-        
-        /*$("#layout").animate({ 
-          top: "-=300px",
-        }, 5000);*/
-        
-      });
-      
-      document.write('<div id="loader" style="display:table; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;">'
-          + '<div style="display:table-cell; vertical-align:middle; text-align: center;">'
-          + '<img src="images/loader.gif" width="32" height="32" /><br />loading<span class="dark">!!!</span>'
-          + '</div></div>');
-    </script>
-    <style type="text/css">
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      
-      #loader {
-        background-color: #1c1919;
-        font-family: Georgia, Times, serif;
-        color: #564f51;
-        font-size: 24px;
-        font-style: italic;
-      }
-      
-      #loader img {
-        margin-bottom: 10px;
-      }
-      
-      #loader .dark {
-        color: #3a3234;
-      }
-      
-      #video-bg {
-        background-color: black;
-        z-index: 1000;
-        opacity: 0.9;
-        width: 100%;
-        height: 2000px;
-        position: fixed;
-        left: 0;
-        top: 0;
-        display: none;
-      }
-      
-      #video {
-        z-index: 1001;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        display: inline-block;
-        display: none;
-      }
-    </style>
+	<script src="javascripts/main.js"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="style.css" />
   </head>
   <body>
     <div id="video-bg"></div>
     
-    <img src="images/layout.jpg" style="position:fixed;" id="layout" usemap="#layoutmap" />
-    <img src="images/shadow.png" style="position:fixed;z-index:100" id="shadow" />
+    <img src="images/layout.jpg" id="layout" usemap="#layoutmap" />
+    <img src="images/shadow.png" id="shadow" />
+
+	<div class="ui-hint" id="click-hint"><span class="h">click once</span> to freeze</div>
     
     <map name="layoutmap">
-      <area shape="rect" coords="442,1201,638,1337" href="mailto:james@camelattack.com" alt="Contact">
-      <area shape="rect" coords="746,1258,995,1331" href="javascript:showVideo('E3ZfKsf8KE4');" alt="Watch the video">
-      <area shape="rect" coords="742,1334,939,1374" href="javascript:showVideo('qlKZMIHEUpY');" alt="Watch the video">
+      <area shape="rect" class="email" coords="442,1201,638,1337" href="mailto:james@camelattack.com" target="_blank" alt="Contact">
+      <area shape="rect" class="video" coords="746,1258,995,1331" href="javascript:showVideo('E3ZfKsf8KE4');" alt="Watch the video">
+      <area shape="rect" class="video" coords="742,1334,939,1374" href="javascript:showVideo('qlKZMIHEUpY');" alt="Watch the video">
+	  <area shape="rect" class="video" coords="740,1370,930,1402" href="javascript:showVideo('ydLn_eBGB7U');" alt="Watch the video">
     </map>
+
+	<div id="loader">
+		<div>
+			<img src="images/loader.gif" width="32" height="32" /><br />
+			loading<span class="dark">!!!</span>
+		</div>
+	</div>
+	
+	<div id="mobile-detector"></div>
     
     <script type="text/javascript">
     /* hide the loading-message */
     $(window).load(function(){
         $('#loader').fadeOut(500);
+		loaded = true;
+		
+		if (isMobile) {
+			$('html, body').scrollTop(-y_offset);
+			$('html, body').scrollLeft(-x_offset);
+		}
     });
     </script>
   </body>
