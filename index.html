@@ -39,10 +39,9 @@
 		loaded = true;
 		
 		if (isMobile) {
-			alert('is mobile');
 			$('#shadow').hide();
 			$('html, body').scrollTop(-y_offset);
-			$('html, body').scrollLeft(-x_offset);
+			$('html, body').scrollLeft(-(x_offset+100));
 		}
     });
     </script>
