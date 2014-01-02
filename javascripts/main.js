@@ -234,15 +234,6 @@ $(document).ready(function () {
 	            moveImage();
 	        }
 	    });
-	
-		setTimeout(function () {
-            if (!startedMoving) {
-				$('#click-hint').addClass('move-hint');
-				$('#click-hint').html('<span class="h">move your mouse</span> to look around');
-                $('#click-hint').fadeIn(300);
-				moveHintShown = true;
-            }
-        }, 2000);
 
 	    $('area.video').hover(
 	        function () {
