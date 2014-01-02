@@ -101,6 +101,8 @@ $(document).ready(function () {
     x_offset = (w - img_w) / 2;
     y_offset = (h - img_h) / 2;
 
+	alert(x_offset);
+
 	if (!isMobile) {
 		jQuery.easing.def = "linear";
 

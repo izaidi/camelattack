@@ -5,11 +5,11 @@ body {
 }
 
 #shadow {
-	display: none;
+	display: none !important;
 }
 
 .ui-hint {
-	display: none;
+	display: none !important;
 }
 
 #mobile-detector {
