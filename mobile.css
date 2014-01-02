@@ -1,0 +1,18 @@
+body {
+	padding: 0;
+    margin: 0;
+	background-color: #1c1919;
+}
+
+#shadow {
+	display: none;
+}
+
+.ui-hint {
+	display: none;
+}
+
+#mobile-detector {
+	display: block !important;
+	height: 1;
+}
