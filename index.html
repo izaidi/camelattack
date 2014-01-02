@@ -35,13 +35,14 @@
     <script type="text/javascript">
     /* hide the loading-message */
     $(window).load(function(){
-        $('#loader').fadeOut(500);
 		loaded = true;
-		
 		if (isMobile) {
-			$('#shadow').hide();
+			$('#loader').hide();
+			$('#layout').css('position','static');
 			$('html, body').scrollTop(-y_offset);
 			$('html, body').scrollLeft(-(x_offset+100));
+		} else {
+			$('#loader').fadeOut(500);
 		}
     });
     </script>
