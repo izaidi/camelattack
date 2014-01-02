@@ -54,9 +54,18 @@ function moveImage() {
         queue: false
     });
 
+	if (!startedMoving) {
+		startedMoving = true;
+		if (moveHintShown) {
+            $('#click-hint').fadeOut(200);
+        }
+	}
+
     if (!clickHintShown) {
         setTimeout(function () {
             if (!clickHintShown && !video) {
+				$('#click-hint').html(hintHtml);
+				$('#click-hint').removeClass('move-hint');
                 $('#click-hint').fadeIn(300);
                 clickHintShown = true;
                 setTimeout(function () {
@@ -152,6 +161,8 @@ $(document).ready(function () {
 	    hintHtml = $('#click-hint').html();
 
 	    restartDistance = 200;
+		startedMoving = false;
+		moveHintShown = false;
 
 	    $(document).mouseleave(function (e) {
 	        page_x = e.pageX;
@@ -223,6 +234,15 @@ $(document).ready(function () {
 	            moveImage();
 	        }
 	    });
+	
+		setTimeout(function () {
+            if (!startedMoving) {
+				$('#click-hint').addClass('move-hint');
+				$('#click-hint').html('<span class="h">move your mouse</span> to look around');
+                $('#click-hint').fadeIn(300);
+				moveHintShown = true;
+            }
+        }, 2000);
 
 	    $('area.video').hover(
 	        function () {

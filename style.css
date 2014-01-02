@@ -70,6 +70,11 @@ body {
 		border-radius: 15px;
 		display: none;
 	}
+	
+	.move-hint {	
+		width: 50% !important;
+		left: 25% !important;
+	}
 
 	.ui-hint .h {
 		color: white;
