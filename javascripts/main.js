@@ -1,7 +1,11 @@
 function showVideo(videoid) {
 	$('.ui-hint').hide();
     video = true;
-    videoDiv = $('<div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/' + videoid + '" frameborder="0" allowfullscreen></iframe></div>');
+	if ($('#'+videoid).hasClass('vimeo')) {
+		videoDiv = $('<div id="video"><object width="853" height="480"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=' + videoid + '&amp;force_embed=1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=85696780&amp;force_embed=1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="853" height="480"></embed></object></div>');
+	} else {
+		videoDiv = $('<div id="video"><iframe width="853" height="480" src="http://www.youtube.com/embed/' + videoid + '" frameborder="0" allowfullscreen></iframe></div>');
+	}
     videoDiv.insertAfter('#video-bg');
     $('#video-bg').fadeIn(600, function () {
         var top = ($(window).height() - 480) / 2;
@@ -111,10 +115,14 @@ $(document).ready(function () {
     y_offset = (h - img_h) / 2;
 
 	// set click events on videos
-	$('.video:not(.vimeo)').each(function() {
+	$('.video').each(function() {
 		var videoId = this.id;
 		if (isMobile) {
-			$(this).attr('href', 'http://www.youtube.com/watch?v=' + videoId);
+			if ($(this).hasClass('vimeo')) {
+				$(this).attr('href', 'http://vimeo.com/' + videoId);
+			} else {
+				$(this).attr('href', 'http://www.youtube.com/watch?v=' + videoId);
+			}
 		} else {
 			$(this).click(function() {
 				showVideo(videoId);
