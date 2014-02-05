@@ -111,7 +111,7 @@ $(document).ready(function () {
     y_offset = (h - img_h) / 2;
 
 	// set click events on videos
-	$('.video').each(function() {
+	$('.video:not(.vimeo)').each(function() {
 		var videoId = this.id;
 		if (isMobile) {
 			$(this).attr('href', 'http://www.youtube.com/watch?v=' + videoId);
