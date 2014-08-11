@@ -254,6 +254,18 @@ $(document).ready(function () {
 	            $('#click-hint').html(hintHtml);
 	        }
 	    );
+	    
+	    $('area.link').hover(
+	        function () {
+	            stopMove(100);
+	            $('#click-hint').addClass('yellow');
+	            $('#click-hint').html('click to learn more');
+	        },
+	        function () {
+	            $('#click-hint').removeClass('yellow');
+	            $('#click-hint').html(hintHtml);
+	        }
+	    );
 
 	    $('area.email').hover(
 	        function () {
